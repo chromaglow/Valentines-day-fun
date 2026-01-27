@@ -215,17 +215,8 @@ async function startCinematicGlitch() {
     saveState();
     sendMagicPing();
 
-    // Prepare Content
-    const content = setupRevealContent('first_run');
-
-    // Start Ghost Typing - SLOW SPEED (150ms)
-    typewriterEffect(content.mainBody, 'reveal-body', 150).then(async () => {
-        await wait(1000);
-        // Then show the personalized P.S.
-        const footer = document.getElementById('reveal-footer');
-        footer.innerHTML = content.mainBody + "<br><br>" + content.footer;
-        footer.style.opacity = 1;
-    });
+    // Start Quote Sequence
+    startQuoteSequence();
 }
 
 function playMusic(fadeInDuration = 2000) {
@@ -340,7 +331,13 @@ const MESSAGES = {
             second: "Tap this any time you need a reminder: The world is full of love, and it will triumph.", // Safe Mode / Reminder
             third: "You really like pressing buttons, don't you?",
             return: "I was wondering when you'd come back."
-        }
+        },
+        quotes: [
+            "Love is not just a feeling, it's a practice.",
+            "You are worthy of the love you keep trying to give everyone else.",
+            "To love and be loved is to feel the sun from both sides.",
+            "Wherever you are, you are exactly where you need to be."
+        ]
     }
 };
 
