@@ -281,7 +281,8 @@ function showPhase(id) {
 function loadState() {
     // Debug/Reset Check
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('reset') || urlParams.has('debug')) {
+    // Only clear state if RESET is explicitly requested
+    if (urlParams.has('reset')) {
         console.log("Debug Mode: Clearing State");
         localStorage.removeItem('nfc_valentine_state');
     }
