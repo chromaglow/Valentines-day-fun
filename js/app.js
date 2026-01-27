@@ -1,5 +1,4 @@
 // App Configuration
-// App Configuration
 const CONFIG = {
     unlockDate: new Date('2024-02-14T00:00:00'), // TARGET DATE
     debugMode: new URLSearchParams(window.location.search).has('debug'), // Auto-enable if ?debug in URL
@@ -31,7 +30,6 @@ function init() {
     setupTheme();
 
     // Check Date Gate immediately
-    // Check Date Gate immediately
     if (!CONFIG.debugMode && new Date() < CONFIG.unlockDate) {
         showPhase(1); // Locked
 
@@ -44,15 +42,13 @@ function init() {
     }
 
     // If unlocked and "Safe Mode" applies (seen before), skip to end?
-    // User requested "Safe Mode" logic: if unlocked before, skip glitch.
     if (state.hasUnlocked) {
         const content = setupRevealContent('return');
         showPhase(3); // Jump to Reveal
 
-        // Just show text immediately or ghost type fast?
         document.getElementById('reveal-body').innerText = content.mainBody;
 
-        playMusic(); // Might be blocked until interaction, but try.
+        playMusic();
     } else {
         // First run or Unlocked but fresh session
         showPhase(0); // Tap to Connect
@@ -64,56 +60,133 @@ function init() {
 
 // --- CORE FLOW ---
 
+// --- LOCKED PHASE LOGIC ---
+function updateLockedMessage() {
+    state.clickCount++;
+    saveState();
+
+    const time = setupTheme(); // 'morning' or 'evening'
+    const prefix = time === 'morning' ? "Good Morning." : "Good Evening.";
+
+    let msg = "";
+    // Attempt 1
+    if (state.clickCount === 1) {
+        msg = "Patience is a virtue.";
+    }
+    // Attempt 2
+    else if (state.clickCount === 2) {
+        msg = "Relax, it's not time yet.";
+    }
+    // Attempt 3+
+    else {
+        msg = "I will turn this valentine around and send it back home.";
+    }
+
+    document.getElementById('gate-message').innerText = prefix;
+    document.getElementById('gate-subtext').innerText = msg;
+}
+
 function handleStart() {
+    // 0. Test Audio Volume immediately (Debug)
+    audio.thump.volume = 1.0;
+
     // 1. Initialize Audio Context (Mobile Requirement)
     audio.thump.play().then(() => {
         audio.thump.pause();
         audio.thump.currentTime = 0;
-    }).catch(e => console.log('Audio init', e));
+        console.log("Audio Unlocked");
+    }).catch(e => console.error("Audio Init Failed:", e));
 
     // 2. Request Motion Permissions (iOS 13+)
     requestMotion();
 
     // 3. Start Sequence
-    startGlitchSequence();
+    startCinematicGlitch();
 }
 
-function startGlitchSequence() {
+async function startCinematicGlitch() {
     showPhase(2); // Glitch Screen
+    const app = document.getElementById('app-container');
+    const term = document.querySelector('.terminal-view');
+    term.innerHTML = ""; // Clear start
 
-    // Queue Audio Haptic
-    setTimeout(() => audio.thump.play(), 500);
-    setTimeout(() => audio.thump.play(), 1200);
+    // Helper for timing
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const typeLine = (txt, style = "") => {
+        const div = document.createElement('div');
+        div.className = "status-line " + style;
+        div.innerText = txt;
+        term.appendChild(div);
+    };
 
-    // Shake Effect
-    document.getElementById('app-container').classList.add('shake-screen');
+    // T=0: Dark start
+    await wait(500);
 
-    // Transitions
-    setTimeout(() => {
-        // END GLITCH
-        document.getElementById('app-container').classList.remove('shake-screen');
-        showPhase(3); // Reveal
-        playMusic();
+    // T=0.5: Line 1
+    typeLine("SYSTEM UNSTABLE...");
+    await wait(2000);
 
-        // Mark as unlocked in storage
-        state.hasUnlocked = true;
-        saveState();
+    // T=2.5: Line 2
+    typeLine("ATTEMPTING RECOVERY...");
+    await wait(2000);
 
-        // Magic Ping (Notify Creator)
-        sendMagicPing();
+    // T=4.5: CHAOS MODE
+    // Start pulsing audio loop
+    let thumpCount = 0;
+    const thumpLoop = setInterval(() => {
+        audio.thump.currentTime = 0;
+        audio.thump.play().catch(e => console.log("Thump fail", e));
+        thumpCount++;
+        // Stop after 5 thumps (~4s)
+        if (thumpCount > 5) clearInterval(thumpLoop);
+    }, 800);
 
-        // Prepare Content
-        const content = setupRevealContent('first_run');
+    // Visual Chaos
+    app.classList.add('shake-screen');
+    const strobe = setInterval(() => {
+        app.style.backgroundColor = app.style.backgroundColor === 'white' ? 'black' : 'white';
+    }, 100);
 
-        // Start Ghost Typing
-        typewriterEffect(content.mainBody, 'reveal-body').then(() => {
-            // Show footer after typing is done
-            const footerEl = document.getElementById('reveal-footer');
-            footerEl.innerText = content.footer;
-            footerEl.style.opacity = 1; // Assume CSS handles fade in
-        });
+    term.innerHTML += "<br><div class='status-line dim'>CRITICAL FAILURE</div>";
 
-    }, 3500); // 3.5s Glitch Duration
+    await wait(3000);
+
+    // T=7.5: Stop Chaos
+    clearInterval(strobe);
+    clearInterval(thumpLoop);
+    app.classList.remove('shake-screen');
+    app.style.backgroundColor = 'black';
+    term.innerHTML = ""; // Clear all
+
+    await wait(1000);
+
+    // T=8.5: The Drop (Silence)
+    typeLine("OVERLOAD IMMINENT", "accent-red");
+
+    await wait(2500);
+
+    // T=11.0: REVEAL
+    showPhase(3);
+
+    // Fade In Music (Over 2s)
+    playMusic(2000);
+
+    // Mark as unlocked
+    state.hasUnlocked = true;
+    saveState();
+    sendMagicPing();
+
+    // Prepare Content
+    const content = setupRevealContent('first_run');
+
+    // Ghost Typing
+    typewriterEffect("You've been love-bombed.", 'reveal-body').then(async () => {
+        await wait(1000);
+        // Then show the personalized P.S.
+        const footer = document.getElementById('reveal-footer');
+        footer.innerHTML = content.mainBody + "<br><br>" + content.footer;
+        footer.style.opacity = 1;
+    });
 }
 
 function playMusic(fadeInDuration = 2000) {
@@ -267,9 +340,6 @@ function setupRevealContent(mode) {
         footer = MESSAGES.reveal.time[timeOfDay];
     }
 
-    // 3. Set Text (Title is static in HTML: "Just kidding.")
-    // We don't set innerText here because Ghost Typing will handle the Body.
-    // We just prepare the data.
     return { mainBody, footer };
 }
 
@@ -280,12 +350,6 @@ async function typewriterEffect(text, elementId) {
     let cursor = 0;
     const speed = 50; // ms per char
     const variance = 20; // Randomize speed slightly for human feel
-
-    // Parse for "backspace" events? 
-    // Simple implementation: Just type straight for now. 
-    // Advanced: To add backspaces, we'd need a script array.
-    // Let's stick to straight typing for the MVP to ensure reliability, 
-    // unless spec requires specific backspace script.
 
     while (cursor < text.length) {
         element.innerHTML += text.charAt(cursor);
