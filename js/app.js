@@ -203,6 +203,7 @@ async function startCinematicGlitch() {
 
     // T=11.0: REVEAL
     showPhase(3);
+    spawnFloatingHearts();
 
     // Fade In Music (Over 2s)
     playMusic(2000);
@@ -419,6 +420,32 @@ function sendMagicPing() {
             priority: 3
         })
     }).catch(err => console.error("Ping failed", err));
+}
+
+function spawnFloatingHearts() {
+    const container = document.getElementById('heart-bg');
+    const symbols = ['❤', '♥', '♡'];
+
+    // Spawn a heart every 300ms
+    setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('bg-heart');
+        heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+
+        // Randomize
+        const left = Math.random() * 100; // 0-100% width
+        const size = 1 + Math.random() * 2; // 1rem to 3rem
+        const duration = 5 + Math.random() * 5; // 5-10s float time
+
+        heart.style.left = `${left}%`;
+        heart.style.fontSize = `${size}rem`;
+        heart.style.animationDuration = `${duration}s`;
+
+        container.appendChild(heart);
+
+        // Cleanup
+        setTimeout(() => heart.remove(), duration * 1000);
+    }, 400);
 }
 
 // Run
