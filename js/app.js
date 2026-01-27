@@ -463,7 +463,7 @@ async function startQuoteSequence() {
     // Restore Footer with SMS Link
     const footer = document.getElementById('reveal-footer');
     if (footer) {
-        footer.innerHTML = '<a href="sms:&body=I found the hidden valentine!" class="sms-link">Tell him you found this</a>';
+        footer.innerHTML = '<a href="sms:&body=I found the hidden valentine!" class="sms-link">Tell Ezra you found his love</a>';
         footer.style.opacity = 1;
         // Ensure it's clickable (z-index fix)
         footer.style.position = 'relative';
