@@ -31,6 +31,7 @@ function init() {
     setupTheme();
 
     // Check Date Gate immediately
+    // Check Date Gate immediately
     if (!CONFIG.debugMode && new Date() < CONFIG.unlockDate) {
         showPhase(1); // Locked
 
