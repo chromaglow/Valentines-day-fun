@@ -121,38 +121,46 @@ async function startCinematicGlitch() {
 
     // Helper for timing
     const wait = ms => new Promise(r => setTimeout(r, ms));
-    const typeLine = (txt, style = "") => {
+
+    // Async Typewriter for Terminal
+    const typeLine = async (txt, style = "") => {
         const div = document.createElement('div');
         div.className = "status-line " + style;
-        div.innerText = txt;
         term.appendChild(div);
+
+        for (let i = 0; i < txt.length; i++) {
+            div.innerText += txt.charAt(i);
+            // Fast typing for glitch (30-60ms variance)
+            await wait(30 + Math.random() * 30);
+        }
     };
 
     // T=0: Dark start
     await wait(500);
 
     // T=0.5: Line 1
-    typeLine("SYSTEM UNSTABLE...");
+    await typeLine("SYSTEM UNSTABLE...");
 
-    // Play "Hit Two" (First impact)
+    // Play "Hit Two" (First impact) - Play AFTER text starts or during? 
+    // User wants "Hit Two is the first sample to be played after the first line"
     audio.hit2.play().catch(e => console.log("Hit2 Fail", e));
 
-    await wait(2000);
+    await wait(1500);
 
     // T=2.5: Line 2
-    typeLine("ATTEMPTING RECOVERY...");
-    await wait(2000);
+    await typeLine("ATTEMPTING RECOVERY...");
+    await wait(1500);
 
     // T=4.5: CHAOS MODE
-    // Start pulsing audio loop (Hit One)
+    // Start pulsing audio loop (Hit One) - Slower Loop
     let thumpCount = 0;
     const thumpLoop = setInterval(() => {
         audio.hit1.currentTime = 0;
         audio.hit1.play().catch(e => console.log("Hit1 fail", e));
         thumpCount++;
-        // Stop after 5 hits (~4s)
-        if (thumpCount > 5) clearInterval(thumpLoop);
-    }, 800);
+        // Stop after 4 hits (spaced out more)
+        if (thumpCount > 4) clearInterval(thumpLoop);
+    }, 1200); // Increased from 800 to 1200ms to let sample play out
 
     // Visual Chaos
     app.classList.add('shake-screen');
@@ -162,7 +170,7 @@ async function startCinematicGlitch() {
 
     term.innerHTML += "<br><div class='status-line dim'>CRITICAL FAILURE</div>";
 
-    await wait(3000);
+    await wait(4000);
 
     // T=7.5: Stop Chaos
     clearInterval(strobe);
@@ -174,7 +182,7 @@ async function startCinematicGlitch() {
     await wait(1000);
 
     // T=8.5: The Drop (Silence)
-    typeLine("OVERLOAD IMMINENT", "accent-red");
+    await typeLine("OVERLOAD IMMINENT", "accent-red");
 
     await wait(2500);
 
@@ -192,8 +200,8 @@ async function startCinematicGlitch() {
     // Prepare Content
     const content = setupRevealContent('first_run');
 
-    // Ghost Typing
-    typewriterEffect("You've been love-bombed.", 'reveal-body').then(async () => {
+    // Start Ghost Typing - SLOW SPEED (150ms)
+    typewriterEffect(content.mainBody, 'reveal-body', 150).then(async () => {
         await wait(1000);
         // Then show the personalized P.S.
         const footer = document.getElementById('reveal-footer');
@@ -356,12 +364,11 @@ function setupRevealContent(mode) {
     return { mainBody, footer };
 }
 
-async function typewriterEffect(text, elementId) {
+async function typewriterEffect(text, elementId, baseSpeed = 50) {
     const element = document.getElementById(elementId);
     element.innerHTML = ''; // Clear
 
     let cursor = 0;
-    const speed = 50; // ms per char
     const variance = 20; // Randomize speed slightly for human feel
 
     while (cursor < text.length) {
@@ -369,7 +376,7 @@ async function typewriterEffect(text, elementId) {
         cursor++;
 
         // Random pause
-        const delay = speed + (Math.random() * variance);
+        const delay = baseSpeed + (Math.random() * variance);
         await new Promise(r => setTimeout(r, delay));
     }
 }
