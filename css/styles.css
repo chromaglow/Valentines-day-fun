@@ -1,0 +1,174 @@
+:root {
+    /* Theme: Dark (Default/Glitch) */
+    --bg-color: #050505;
+    --text-color: #eeeeee;
+    --accent-color: #ff3b30;
+    --font-system: 'Inter', sans-serif;
+    --font-warm: 'Playfair Display', serif;
+
+    /* Dynamic Theme Variables (Will be updated by JS) */
+    --reveal-bg: #fffcf2; /* Morning Cream */
+    --reveal-text: #2c2c2c;
+    --reveal-accent: #d62828;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none; /* No selecting text */
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-system);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Disable scrolling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#app-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- PHASES --- */
+.phase {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+}
+
+.phase.active {
+    opacity: 1;
+    pointer-events: all;
+    z-index: 10;
+}
+
+.phase.hidden {
+    display: none;
+}
+
+/* --- PHASE 0: START --- */
+#phase-0 {
+    background: var(--bg-color);
+}
+.ghost-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.fade-in-text {
+    animation: fadeInPulse 3s infinite;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    text-transform: uppercase;
+}
+
+/* --- PHASE 1: LOCKED --- */
+#gate-message {
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.subtext {
+    font-size: 1rem;
+    opacity: 0.6;
+}
+
+/* --- PHASE 2: GLITCH --- */
+#phase-2 {
+    background: #000;
+    font-family: 'Courier New', monospace;
+    align-items: flex-start;
+    padding: 2rem;
+}
+.status-line {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+}
+.dim { opacity: 0.5; }
+
+/* Glitch Shake Animation Class (JS triggers this) */
+.shake-screen {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite;
+}
+
+/* --- PHASE 3: REVEAL --- */
+#phase-3 {
+    background-color: var(--reveal-bg);
+    color: var(--reveal-text);
+    font-family: var(--font-warm);
+    transition: background-color 1.5s ease;
+}
+
+.content-layer {
+    text-align: center;
+    padding: 2rem;
+    z-index: 5;
+    transform: translateZ(20px); /* 3D effect prep */
+}
+
+#reveal-title {
+    font-size: 2.5rem;
+    color: var(--reveal-accent);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+#reveal-body {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    min-height: 3rem; /* Prevent layout jump during typing */
+}
+
+.text-link {
+    margin-top: 3rem;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--reveal-accent);
+    color: var(--reveal-accent);
+    font-family: var(--font-system);
+    font-size: 0.9rem;
+    padding-bottom: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeInPulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.3; }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
