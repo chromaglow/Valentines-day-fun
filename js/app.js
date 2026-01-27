@@ -162,6 +162,13 @@ function handleParallax(e) {
 }
 
 function loadState() {
+    // Debug/Reset Check
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('reset') || urlParams.has('debug')) {
+        console.log("Debug Mode: Clearing State");
+        localStorage.removeItem('nfc_valentine_state');
+    }
+
     const saved = localStorage.getItem('nfc_valentine_state');
     if (saved) {
         state = JSON.parse(saved);
