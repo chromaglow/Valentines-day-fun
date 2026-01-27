@@ -460,9 +460,15 @@ async function startQuoteSequence() {
     container.style.opacity = 0;
     container.innerHTML = "";
 
-    // Ensure footer is hidden (No "Tell him you saw this")
+    // Restore Footer with SMS Link
     const footer = document.getElementById('reveal-footer');
-    if (footer) footer.style.opacity = 0;
+    if (footer) {
+        footer.innerHTML = '<a href="sms:&body=I found the hidden valentine!" class="sms-link">Tell him you found this</a>';
+        footer.style.opacity = 1;
+        // Ensure it's clickable (z-index fix)
+        footer.style.position = 'relative';
+        footer.style.zIndex = '100';
+    }
 
     // 1. Show Greeting
     const greeting = "Just kidding, take this moment to know I see you and you are loved.";

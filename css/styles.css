@@ -178,17 +178,22 @@ body {
     /* Prevent layout jump during typing */
 }
 
-.text-link {
+.sms-link {
     margin-top: 3rem;
-    background: none;
-    border: none;
+    display: inline-block;
+    text-decoration: none;
     border-bottom: 1px solid var(--reveal-accent);
     color: var(--reveal-accent);
     font-family: var(--font-system);
     font-size: 0.9rem;
     padding-bottom: 4px;
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.sms-link:hover {
+    opacity: 1;
 }
 
 /* --- ANIMATIONS --- */
