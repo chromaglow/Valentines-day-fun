@@ -130,8 +130,8 @@ async function startCinematicGlitch() {
 
         for (let i = 0; i < txt.length; i++) {
             div.innerText += txt.charAt(i);
-            // Fast typing for glitch (30-60ms variance)
-            await wait(30 + Math.random() * 30);
+            // Slow typing for glitch (requested 300ms)
+            await wait(300 + Math.random() * 30);
         }
     };
 
