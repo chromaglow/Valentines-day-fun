@@ -514,7 +514,7 @@ async function startQuoteSequence() {
         // Fade In (1s)
         container.style.transition = "opacity 1s ease";
         container.style.opacity = 1;
-        await new Promise(r => setTimeout(r, 1000 + 2000)); // Fade(1) + Hold(2)
+        await new Promise(r => setTimeout(r, 1000 + 4000)); // Fade(1) + Hold(4)
 
         // Fade Out (2s)
         container.style.transition = "opacity 2s ease";
