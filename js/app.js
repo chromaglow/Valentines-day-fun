@@ -92,10 +92,10 @@ function updateLockedMessage() {
 
 async function handleStart() {
     // 1. Initialize Audio Context (Mobile Requirement)
-    // We play minimal volume on all audio to unlock them
-    audio.hit1.volume = 0;
-    audio.hit2.volume = 0;
-    audio.song.volume = 0;
+    // We play "muted" to unlock the elements without sound leaking
+    audio.hit1.muted = true;
+    audio.hit2.muted = true;
+    audio.song.muted = true;
 
     try {
         await Promise.all([
@@ -112,17 +112,22 @@ async function handleStart() {
         audio.hit2.currentTime = 0;
         audio.song.currentTime = 0;
 
+        // Unmute for actual use
+        audio.hit1.muted = false;
+        audio.hit2.muted = false;
+        audio.song.muted = false;
+
+        // Reset Volume just in case
         audio.hit1.volume = 1.0;
         audio.hit2.volume = 1.0;
+        // Song volume is managed by fade-in logic later
+
         console.log("Audio Unlocked");
     } catch (e) {
         console.error("Audio Init Failed:", e);
     }
 
-    // 2. Request Motion Permissions (iOS 13+) - WAIT for user response
-    await requestMotion();
-
-    // 3. Start Sequence (Only after permissions are handled)
+    // 2. Start Sequence Immediately (No Motion Permission)
     startCinematicGlitch();
 }
 
