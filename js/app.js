@@ -171,7 +171,9 @@ async function startCinematicGlitch() {
         app.style.backgroundColor = app.style.backgroundColor === 'white' ? 'black' : 'white';
     }, 100);
 
-    term.innerHTML += "<br><div class='status-line dim'>CRITICAL FAILURE</div>";
+    // T=4.5: CHAOS MODE (continued)
+    // Third line now types out slowly like the others
+    await typeLine("CRITICAL FAILURE", "dim");
 
     await wait(4000);
 
