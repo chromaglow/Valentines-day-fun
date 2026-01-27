@@ -69,8 +69,10 @@ function updateLockedMessage() {
     state.clickCount++;
     saveState();
 
-    const time = setupTheme(); // 'morning' or 'evening'
-    const prefix = time === 'morning' ? "Good Morning." : "Good Evening.";
+    const time = setupTheme(); // 'morning', 'afternoon', or 'evening'
+    let prefix = "Good Morning.";
+    if (time === 'afternoon') prefix = "Good Afternoon.";
+    if (time === 'evening') prefix = "Good Evening.";
 
     let msg = "";
     // Attempt 1
@@ -318,6 +320,7 @@ const MESSAGES = {
         },
         time: {
             morning: "Good morning. I'm glad you started your day here.",
+            afternoon: "I hope your day is going well.",
             evening: "I'm glad you found this tonight."
         },
         visit: {
@@ -364,10 +367,15 @@ const MESSAGES = {
 
 function setupTheme() {
     const hour = new Date().getHours();
-    const isEvening = hour < 5 || hour >= 17;
 
-    // Set Theme Variables
-    if (isEvening) {
+    // Determine Time of Day
+    let timeOfDay = 'morning';
+    if (hour >= 12 && hour < 17) timeOfDay = 'afternoon';
+    if (hour >= 17 || hour < 5) timeOfDay = 'evening';
+
+    // Set Theme Variables (Visuals)
+    // Evening = Dark / Morning & Afternoon = Light
+    if (timeOfDay === 'evening') {
         document.documentElement.style.setProperty('--reveal-bg', '#1a0b14'); // Dark Purple
         document.documentElement.style.setProperty('--reveal-text', '#ffe3f1'); // Soft Pink
         document.documentElement.style.setProperty('--reveal-accent', '#ff70a6'); // Neon Pink
@@ -378,7 +386,7 @@ function setupTheme() {
     }
 
     // Return time-of-day string for logic
-    return isEvening ? 'evening' : 'morning';
+    return timeOfDay;
 }
 
 function setupRevealContent(mode) {
