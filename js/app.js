@@ -325,7 +325,7 @@ const MESSAGES = {
             evening: "I'm glad you found this tonight."
         },
         visit: {
-            second: "Tap this any time you need a reminder: The world is full of love, and it will triumph.", // Safe Mode / Reminder
+            second: "AWWWWW you came back, i missed you too!!", // Safe Mode / Reminder
             third: "You really like pressing buttons, don't you?",
             return: "I was wondering when you'd come back."
         },
