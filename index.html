@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,13 +9,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Using 'Inter' for system feel and 'Playfair Display' for the warm reveal -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
     <!-- LAYER 1: The App Container (For Shake/Glitch effects) -->
     <div id="app-container">
-        
+
         <!-- PHASE 0: Tap to Start (Overlay) -->
         <div id="phase-0" class="phase active">
             <div class="center-content">
@@ -52,9 +56,9 @@
                     <p id="reveal-body" class="typewriter"></p>
                     <p id="reveal-footer" class="fade-up-delay"></p>
                 </div>
-                
+
                 <div class="interaction-layer">
-                     <button id="reply-btn" class="text-link hidden">Tell him you saw this</button>
+                    <button id="reply-btn" class="text-link hidden">Tell him you saw this</button>
                 </div>
             </div>
         </div>
@@ -62,9 +66,10 @@
     </div>
 
     <!-- Audio Elements -->
-    <audio id="audio-thump" src="assets/audio/thump.mp3" preload="auto"></audio>
+    <audio id="audio-thump" src="assets/audio/thump.wav" preload="auto"></audio>
     <audio id="audio-song" src="assets/audio/song.mp3" preload="auto" loop></audio>
 
     <script src="js/app.js"></script>
 </body>
+
 </html>
