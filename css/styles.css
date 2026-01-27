@@ -7,7 +7,8 @@
     --font-warm: 'Playfair Display', serif;
 
     /* Dynamic Theme Variables (Will be updated by JS) */
-    --reveal-bg: #fffcf2; /* Morning Cream */
+    --reveal-bg: #fffcf2;
+    /* Morning Cream */
     --reveal-text: #2c2c2c;
     --reveal-accent: #d62828;
 }
@@ -16,7 +17,8 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    user-select: none; /* No selecting text */
+    user-select: none;
+    /* No selecting text */
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -26,7 +28,8 @@ body {
     font-family: var(--font-system);
     height: 100vh;
     width: 100vw;
-    overflow: hidden; /* Disable scrolling */
+    overflow: hidden;
+    /* Disable scrolling */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,6 +73,7 @@ body {
 #phase-0 {
     background: var(--bg-color);
 }
+
 .ghost-btn {
     position: absolute;
     top: 0;
@@ -80,6 +84,7 @@ body {
     border: none;
     cursor: pointer;
 }
+
 .fade-in-text {
     animation: fadeInPulse 3s infinite;
     font-size: 0.9rem;
@@ -94,6 +99,7 @@ body {
     font-size: 1.5rem;
     margin-bottom: 1rem;
 }
+
 .subtext {
     font-size: 1rem;
     opacity: 0.6;
@@ -106,16 +112,40 @@ body {
     align-items: flex-start;
     padding: 2rem;
 }
+
 .status-line {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
     color: var(--accent-color);
 }
-.dim { opacity: 0.5; }
+
+.dim {
+    opacity: 0.5;
+}
+
+.typing-cursor::after {
+    content: '█';
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    color: var(--accent-color);
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
 
 /* Glitch Shake Animation Class (JS triggers this) */
 .shake-screen {
-    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite;
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both infinite;
 }
 
 /* --- PHASE 3: REVEAL --- */
@@ -130,7 +160,8 @@ body {
     text-align: center;
     padding: 2rem;
     z-index: 5;
-    transform: translateZ(20px); /* 3D effect prep */
+    transform: translateZ(20px);
+    /* 3D effect prep */
 }
 
 #reveal-title {
@@ -143,7 +174,8 @@ body {
 #reveal-body {
     font-size: 1.2rem;
     line-height: 1.6;
-    min-height: 3rem; /* Prevent layout jump during typing */
+    min-height: 3rem;
+    /* Prevent layout jump during typing */
 }
 
 .text-link {
@@ -161,14 +193,39 @@ body {
 
 /* --- ANIMATIONS --- */
 @keyframes fadeInPulse {
-    0% { opacity: 0.3; }
-    50% { opacity: 0.8; }
-    100% { opacity: 0.3; }
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
 }
 
 @keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }

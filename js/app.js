@@ -125,7 +125,7 @@ async function startCinematicGlitch() {
     // Async Typewriter for Terminal
     const typeLine = async (txt, style = "") => {
         const div = document.createElement('div');
-        div.className = "status-line " + style;
+        div.className = "status-line " + style + " typing-cursor"; // Start with cursor
         term.appendChild(div);
 
         for (let i = 0; i < txt.length; i++) {
@@ -133,6 +133,9 @@ async function startCinematicGlitch() {
             // Slow typing for glitch (requested 300ms)
             await wait(300 + Math.random() * 30);
         }
+
+        // Remove cursor after typing is done (so it doesn't blink on all lines)
+        div.classList.remove('typing-cursor');
     };
 
     // T=0: Dark start
