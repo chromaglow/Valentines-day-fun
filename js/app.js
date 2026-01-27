@@ -434,9 +434,8 @@ function sendMagicPing() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code') || 'Unknown';
 
-    // Webhook URL (You will need to replace this with your actual ntfy.sh or discord url)
-    // For now, we log it. 
-    const WEBHOOK_URL = "";
+    // Webhook URL (ntfy.sh active)
+    const WEBHOOK_URL = "https://ntfy.sh/val-ping-ezras-unique";
 
     if (!WEBHOOK_URL) {
         console.log(`[Magic Ping] Code ${code} unlocked the valentine.`);
@@ -460,6 +459,10 @@ async function startQuoteSequence() {
     // Clear initial content
     container.style.opacity = 0;
     container.innerHTML = "";
+
+    // Ensure footer is hidden (No "Tell him you saw this")
+    const footer = document.getElementById('reveal-footer');
+    if (footer) footer.style.opacity = 0;
 
     // 1. Show Greeting
     const greeting = "Just kidding, take this moment to know I see you and you are loved.";
