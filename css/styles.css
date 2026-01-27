@@ -230,14 +230,20 @@ body {
 /* --- FLOATING HEARTS (Background) --- */
 .heart-layer {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: -10%;
+    /* Oversize to prevent edges showing */
+    left: -10%;
+    width: 120%;
+    height: 120%;
     overflow: hidden;
     z-index: 1;
     /* Behind content text */
     pointer-events: none;
+
+    /* Parallax Movement */
+    transform: translate3d(var(--bg-x, 0), var(--bg-y, 0), 0);
+    transition: transform 0.1s ease-out;
+    /* Smooth out jitter */
 }
 
 .bg-heart {
