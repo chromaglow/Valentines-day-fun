@@ -1,6 +1,6 @@
 // App Configuration
 const CONFIG = {
-    unlockDate: new Date('2024-02-14T00:00:00'), // TARGET DATE
+    unlockDate: new Date('2026-02-14T00:00:00'), // TARGET DATE
     debugMode: new URLSearchParams(window.location.search).has('debug'), // Auto-enable if ?debug in URL
     visitThreshold: 3 // Hours between visits to count as "Return"
 };
