@@ -479,6 +479,19 @@ async function startQuoteSequence() {
     container.style.opacity = 0;
     await new Promise(r => setTimeout(r, 2000));
 
+    // 1.5 Show Creation Credits
+    container.innerText = "This card was designed, printed and programmed by Ezra in Seattle, WA.";
+
+    // Fade In (1s)
+    container.style.transition = "opacity 1s ease";
+    container.style.opacity = 1;
+    await new Promise(r => setTimeout(r, 1000 + 5000)); // Fade(1) + Hold(5)
+
+    // Fade Out (2s)
+    container.style.transition = "opacity 2s ease";
+    container.style.opacity = 0;
+    await new Promise(r => setTimeout(r, 2000));
+
     // 2. Start Quote Loop
     // Default quotes if none provided yet
     const quotes = MESSAGES.reveal.quotes || [
