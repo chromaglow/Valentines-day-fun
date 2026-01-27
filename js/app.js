@@ -49,9 +49,8 @@ function init() {
         const content = setupRevealContent('return');
         showPhase(3); // Jump to Reveal
 
-        document.getElementById('reveal-body').innerText = content.mainBody;
-
         spawnFloatingHearts();
+        startQuoteSequence();
 
         playMusic();
     } else {
@@ -337,6 +336,12 @@ const MESSAGES = {
             "You are worthy of the love you keep trying to give everyone else.",
             "To love and be loved is to feel the sun from both sides.",
             "Wherever you are, you are exactly where you need to be."
+        ],
+        quotes: [
+            "Love is not just a feeling, it's a practice.",
+            "You are worthy of the love you keep trying to give everyone else.",
+            "To love and be loved is to feel the sun from both sides.",
+            "Wherever you are, you are exactly where you need to be."
         ]
     }
 };
@@ -425,6 +430,57 @@ function sendMagicPing() {
             priority: 3
         })
     }).catch(err => console.error("Ping failed", err));
+}
+
+// --- QUOTE SEQUENCE LOGIC ---
+async function startQuoteSequence() {
+    const container = document.getElementById('reveal-body');
+    // Clear initial content
+    container.style.opacity = 0;
+    container.innerHTML = "";
+
+    // 1. Show Greeting
+    const greeting = "Just kidding, take this moment to know I see you and you are loved.";
+    container.innerText = greeting;
+
+    // Fade In Greeting
+    container.style.transition = "opacity 2s ease";
+    container.style.opacity = 1;
+
+    // Hold Greeting for 4s
+    await new Promise(r => setTimeout(r, 4000));
+
+    // Fade Out Greeting
+    container.style.opacity = 0;
+    await new Promise(r => setTimeout(r, 2000));
+
+    // 2. Start Quote Loop
+    // Default quotes if none provided yet
+    const quotes = MESSAGES.reveal.quotes || [
+        "Love is not just a feeling, it's a practice.",
+        "You are worthy of the love you keep trying to give everyone else."
+    ];
+
+    let qIndex = 0;
+
+    while (true) {
+        if (qIndex >= quotes.length) qIndex = 0; // Loop
+
+        const quote = quotes[qIndex];
+        container.innerText = quote;
+
+        // Fade In (1s)
+        container.style.transition = "opacity 1s ease";
+        container.style.opacity = 1;
+        await new Promise(r => setTimeout(r, 1000 + 2000)); // Fade(1) + Hold(2)
+
+        // Fade Out (2s)
+        container.style.transition = "opacity 2s ease";
+        container.style.opacity = 0;
+        await new Promise(r => setTimeout(r, 2000));
+
+        qIndex++;
+    }
 }
 
 function spawnFloatingHearts() {
