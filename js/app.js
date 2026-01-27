@@ -189,6 +189,9 @@ async function startCinematicGlitch() {
     audio.hit1.play().catch(e => console.log("Hit1-C", e));
     await typeLine("CRITICAL ", "dim");
 
+    // Let sound finish (dramatic pause)
+    await wait(600);
+
     // "FAILURE"
     audio.hit1.currentTime = 0;
     audio.hit1.play().catch(e => console.log("Hit1-D", e));
