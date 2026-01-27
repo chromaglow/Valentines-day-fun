@@ -92,18 +92,29 @@ function updateLockedMessage() {
 
 function handleStart() {
     // 1. Initialize Audio Context (Mobile Requirement)
-    // We play minimal volume on both new sfx to unlock them
+    // We play minimal volume on all audio to unlock them
     audio.hit1.volume = 0;
     audio.hit2.volume = 0;
+    audio.song.volume = 0;
 
-    Promise.all([audio.hit1.play(), audio.hit2.play()]).then(() => {
+    Promise.all([
+        audio.hit1.play(),
+        audio.hit2.play(),
+        audio.song.play()
+    ]).then(() => {
         audio.hit1.pause();
         audio.hit2.pause();
+        audio.song.pause();
+
         audio.hit1.currentTime = 0;
         audio.hit2.currentTime = 0;
+        audio.song.currentTime = 0;
+
         // Reset Volume
         audio.hit1.volume = 1.0;
         audio.hit2.volume = 1.0;
+        // Song volume will be faded in later
+
         console.log("Audio Unlocked");
     }).catch(e => console.error("Audio Init Failed:", e));
 
