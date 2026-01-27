@@ -279,11 +279,17 @@ function requestMotion() {
 }
 
 function handleParallax(e) {
-    // Basic parallax logic placeholder
-    const x = e.gamma / 5; // Left/Right
-    const y = e.beta / 5;  // Front/Back
-    document.documentElement.style.setProperty('--tiltX', `${x}deg`);
-    document.documentElement.style.setProperty('--tiltY', `${y}deg`);
+    // Clamp tilt to avoiding extreme shifting
+    const limit = 45;
+    const gamma = Math.min(Math.max(e.gamma, -limit), limit); // Left/Right
+    const beta = Math.min(Math.max(e.beta, -limit), limit);  // Front/Back
+
+    // Convert to pixels (Invert for "depth" feel - background moves opposite to tilt)
+    const moveX = -(gamma / limit) * 40; // Max 40px shift
+    const moveY = -(beta / limit) * 40;  // Max 40px shift
+
+    document.documentElement.style.setProperty('--bg-x', `${moveX}px`);
+    document.documentElement.style.setProperty('--bg-y', `${moveY}px`);
 }
 
 function loadState() {
