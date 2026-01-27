@@ -150,36 +150,42 @@ async function startCinematicGlitch() {
 
     await wait(1500);
 
-    // T=2.5: Line 2
-    await typeLine("ATTEMPTING RECOVERY...");
-    await wait(1500);
+    // T=2.5: Line 2 - Split for audio sync
+    // "ATTEMPTING"
+    audio.hit1.currentTime = 0;
+    audio.hit1.play().catch(e => console.log("Hit1-A", e));
+    await typeLine("ATTEMPTING ");
+
+    // "RECOVERY..."
+    audio.hit1.currentTime = 0;
+    audio.hit1.play().catch(e => console.log("Hit1-B", e));
+    await typeLine("RECOVERY...");
+
+    await wait(1000);
 
     // T=4.5: CHAOS MODE
-    // Start pulsing audio loop (Hit One) - Slower Loop
-    let thumpCount = 0;
-    const thumpLoop = setInterval(() => {
-        audio.hit1.currentTime = 0;
-        audio.hit1.play().catch(e => console.log("Hit1 fail", e));
-        thumpCount++;
-        // Stop after 4 hits (spaced out more)
-        if (thumpCount > 4) clearInterval(thumpLoop);
-    }, 1200); // Increased from 800 to 1200ms to let sample play out
-
-    // Visual Chaos
+    // Visual Chaos Only (Audio is now manual)
     app.classList.add('shake-screen');
     const strobe = setInterval(() => {
         app.style.backgroundColor = app.style.backgroundColor === 'white' ? 'black' : 'white';
     }, 100);
 
     // T=4.5: CHAOS MODE (continued)
-    // Third line now types out slowly like the others
-    await typeLine("CRITICAL FAILURE", "dim");
+    // Third line split for audio sync
+    // "CRITICAL"
+    audio.hit1.currentTime = 0;
+    audio.hit1.play().catch(e => console.log("Hit1-C", e));
+    await typeLine("CRITICAL ", "dim");
 
-    await wait(4000);
+    // "FAILURE"
+    audio.hit1.currentTime = 0;
+    audio.hit1.play().catch(e => console.log("Hit1-D", e));
+    await typeLine("FAILURE", "dim");
+
+    await wait(3000);
 
     // T=7.5: Stop Chaos
     clearInterval(strobe);
-    clearInterval(thumpLoop);
     app.classList.remove('shake-screen');
     app.style.backgroundColor = 'black';
     term.innerHTML = ""; // Clear all
