@@ -51,6 +51,8 @@ function init() {
 
         document.getElementById('reveal-body').innerText = content.mainBody;
 
+        spawnFloatingHearts();
+
         playMusic();
     } else {
         // First run or Unlocked but fresh session
@@ -424,18 +426,26 @@ function sendMagicPing() {
 
 function spawnFloatingHearts() {
     const container = document.getElementById('heart-bg');
-    const symbols = ['❤', '♥', '♡'];
+    const symbols = ['❤', '♥'];
 
-    // Spawn a heart every 300ms
+    // Spawn a heart every 400ms
     setInterval(() => {
         const heart = document.createElement('div');
         heart.classList.add('bg-heart');
+
+        // Random Color Class
+        if (Math.random() > 0.5) {
+            heart.classList.add('heart-red');
+        } else {
+            heart.classList.add('heart-pink');
+        }
+
         heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
 
         // Randomize
         const left = Math.random() * 100; // 0-100% width
-        const size = 1 + Math.random() * 2; // 1rem to 3rem
-        const duration = 5 + Math.random() * 5; // 5-10s float time
+        const size = 5 + Math.random() * 10; // LARGE: 5rem to 15rem
+        const duration = 10 + Math.random() * 10; // Slow float (10-20s)
 
         heart.style.left = `${left}%`;
         heart.style.fontSize = `${size}rem`;
