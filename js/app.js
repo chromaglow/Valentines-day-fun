@@ -472,6 +472,10 @@ async function startQuoteSequence(initialGreeting = null) {
         footer.style.zIndex = '100';
     }
 
+    // Clear the static Title ("Just kidding.") so it doesn't clash
+    const title = document.getElementById('reveal-title');
+    if (title) title.innerText = "";
+
     // 1. Show Greeting
     // Use provided greeting (return visit) OR default (after glitch)
     const greeting = initialGreeting || "Just kidding, take this moment to know I see you and you are loved.";
