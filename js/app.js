@@ -472,8 +472,8 @@ async function startQuoteSequence() {
     container.style.transition = "opacity 2s ease";
     container.style.opacity = 1;
 
-    // Hold Greeting for 4s
-    await new Promise(r => setTimeout(r, 4000));
+    // Hold Greeting for 10s (plus 2s fade)
+    await new Promise(r => setTimeout(r, 12000));
 
     // Fade Out Greeting
     container.style.opacity = 0;
