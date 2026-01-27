@@ -268,40 +268,8 @@ function showPhase(id) {
     setTimeout(() => target.classList.add('active'), 10);
 }
 
-function requestMotion() {
-    return new Promise((resolve) => {
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission()
-                .then(permissionState => {
-                    if (permissionState === 'granted') {
-                        window.addEventListener('deviceorientation', handleParallax);
-                    }
-                    resolve();
-                })
-                .catch(e => {
-                    console.error(e);
-                    resolve();
-                });
-        } else {
-            window.addEventListener('deviceorientation', handleParallax);
-            resolve();
-        }
-    });
-}
-
-function handleParallax(e) {
-    // Clamp tilt to avoiding extreme shifting
-    const limit = 45;
-    const gamma = Math.min(Math.max(e.gamma, -limit), limit); // Left/Right
-    const beta = Math.min(Math.max(e.beta, -limit), limit);  // Front/Back
-
-    // Convert to pixels (Invert for "depth" feel - background moves opposite to tilt)
-    const moveX = -(gamma / limit) * 40; // Max 40px shift
-    const moveY = -(beta / limit) * 40;  // Max 40px shift
-
-    document.documentElement.style.setProperty('--bg-x', `${moveX}px`);
-    document.documentElement.style.setProperty('--bg-y', `${moveY}px`);
-}
+// function requestMotion() { removed }
+// function handleParallax(e) { removed }
 
 function loadState() {
     // Debug/Reset Check
