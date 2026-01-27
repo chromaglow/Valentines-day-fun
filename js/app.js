@@ -90,18 +90,20 @@ function updateLockedMessage() {
     document.getElementById('gate-subtext').innerText = msg;
 }
 
-function handleStart() {
+async function handleStart() {
     // 1. Initialize Audio Context (Mobile Requirement)
     // We play minimal volume on all audio to unlock them
     audio.hit1.volume = 0;
     audio.hit2.volume = 0;
     audio.song.volume = 0;
 
-    Promise.all([
-        audio.hit1.play(),
-        audio.hit2.play(),
-        audio.song.play()
-    ]).then(() => {
+    try {
+        await Promise.all([
+            audio.hit1.play(),
+            audio.hit2.play(),
+            audio.song.play()
+        ]);
+
         audio.hit1.pause();
         audio.hit2.pause();
         audio.song.pause();
@@ -110,18 +112,17 @@ function handleStart() {
         audio.hit2.currentTime = 0;
         audio.song.currentTime = 0;
 
-        // Reset Volume
         audio.hit1.volume = 1.0;
         audio.hit2.volume = 1.0;
-        // Song volume will be faded in later
-
         console.log("Audio Unlocked");
-    }).catch(e => console.error("Audio Init Failed:", e));
+    } catch (e) {
+        console.error("Audio Init Failed:", e);
+    }
 
-    // 2. Request Motion Permissions (iOS 13+)
-    requestMotion();
+    // 2. Request Motion Permissions (iOS 13+) - WAIT for user response
+    await requestMotion();
 
-    // 3. Start Sequence
+    // 3. Start Sequence (Only after permissions are handled)
     startCinematicGlitch();
 }
 
@@ -268,18 +269,24 @@ function showPhase(id) {
 }
 
 function requestMotion() {
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    window.addEventListener('deviceorientation', handleParallax);
-                }
-            })
-            .catch(console.error);
-    } else {
-        // Non-iOS 13+ devices
-        window.addEventListener('deviceorientation', handleParallax);
-    }
+    return new Promise((resolve) => {
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('deviceorientation', handleParallax);
+                    }
+                    resolve();
+                })
+                .catch(e => {
+                    console.error(e);
+                    resolve();
+                });
+        } else {
+            window.addEventListener('deviceorientation', handleParallax);
+            resolve();
+        }
+    });
 }
 
 function handleParallax(e) {
