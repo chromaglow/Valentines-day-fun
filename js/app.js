@@ -33,6 +33,12 @@ function init() {
     // Check Date Gate immediately
     if (!CONFIG.debugMode && new Date() < CONFIG.unlockDate) {
         showPhase(1); // Locked
+
+        // Setup Click Listener for Locked Messages
+        document.getElementById('phase-1').addEventListener('click', updateLockedMessage);
+        // Run once to set initial state
+        updateLockedMessage();
+
         return;
     }
 
@@ -109,19 +115,24 @@ function startGlitchSequence() {
     }, 3500); // 3.5s Glitch Duration
 }
 
-function playMusic() {
+function playMusic(fadeInDuration = 2000) {
     audio.song.volume = 0;
-    audio.song.play();
+    audio.song.play().catch(e => console.log("Music play blocked", e));
+
     // Fade in
     let vol = 0;
+    const stepTime = 100; // Update every 100ms
+    const steps = fadeInDuration / stepTime;
+    const volStep = 0.8 / steps; // Target 0.8 volume
+
     const fade = setInterval(() => {
         if (vol < 0.8) {
-            vol += 0.05;
-            audio.song.volume = vol;
+            vol += volStep;
+            audio.song.volume = Math.min(vol, 0.8);
         } else {
             clearInterval(fade);
         }
-    }, 200);
+    }, stepTime);
 }
 
 // --- UTILS ---
