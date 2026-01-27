@@ -226,12 +226,12 @@ function playMusic(fadeInDuration = 2000) {
     let vol = 0;
     const stepTime = 100; // Update every 100ms
     const steps = fadeInDuration / stepTime;
-    const volStep = 0.8 / steps; // Target 0.8 volume
+    const volStep = 1.0 / steps; // Target 1.0 volume
 
     const fade = setInterval(() => {
-        if (vol < 0.8) {
+        if (vol < 1.0) {
             vol += volStep;
-            audio.song.volume = Math.min(vol, 0.8);
+            audio.song.volume = Math.min(vol, 1.0);
         } else {
             clearInterval(fade);
         }
