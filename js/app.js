@@ -13,7 +13,8 @@ const phases = {
     3: document.getElementById('phase-3')
 };
 const audio = {
-    thump: document.getElementById('audio-thump'),
+    hit1: document.getElementById('audio-hit1'),
+    hit2: document.getElementById('audio-hit2'),
     song: document.getElementById('audio-song')
 };
 
@@ -28,6 +29,8 @@ let state = {
 function init() {
     loadState();
     setupTheme();
+
+    const params = new URLSearchParams(window.location.search);
 
     // Check Date Gate immediately
     if (!CONFIG.debugMode && new Date() < CONFIG.unlockDate) {
@@ -87,13 +90,19 @@ function updateLockedMessage() {
 }
 
 function handleStart() {
-    // 0. Test Audio Volume immediately (Debug)
-    audio.thump.volume = 1.0;
-
     // 1. Initialize Audio Context (Mobile Requirement)
-    audio.thump.play().then(() => {
-        audio.thump.pause();
-        audio.thump.currentTime = 0;
+    // We play minimal volume on both new sfx to unlock them
+    audio.hit1.volume = 0;
+    audio.hit2.volume = 0;
+
+    Promise.all([audio.hit1.play(), audio.hit2.play()]).then(() => {
+        audio.hit1.pause();
+        audio.hit2.pause();
+        audio.hit1.currentTime = 0;
+        audio.hit2.currentTime = 0;
+        // Reset Volume
+        audio.hit1.volume = 1.0;
+        audio.hit2.volume = 1.0;
         console.log("Audio Unlocked");
     }).catch(e => console.error("Audio Init Failed:", e));
 
@@ -124,6 +133,10 @@ async function startCinematicGlitch() {
 
     // T=0.5: Line 1
     typeLine("SYSTEM UNSTABLE...");
+
+    // Play "Hit Two" (First impact)
+    audio.hit2.play().catch(e => console.log("Hit2 Fail", e));
+
     await wait(2000);
 
     // T=2.5: Line 2
@@ -131,13 +144,13 @@ async function startCinematicGlitch() {
     await wait(2000);
 
     // T=4.5: CHAOS MODE
-    // Start pulsing audio loop
+    // Start pulsing audio loop (Hit One)
     let thumpCount = 0;
     const thumpLoop = setInterval(() => {
-        audio.thump.currentTime = 0;
-        audio.thump.play().catch(e => console.log("Thump fail", e));
+        audio.hit1.currentTime = 0;
+        audio.hit1.play().catch(e => console.log("Hit1 fail", e));
         thumpCount++;
-        // Stop after 5 thumps (~4s)
+        // Stop after 5 hits (~4s)
         if (thumpCount > 5) clearInterval(thumpLoop);
     }, 800);
 
