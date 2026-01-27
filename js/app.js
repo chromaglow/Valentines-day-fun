@@ -142,11 +142,11 @@ async function startCinematicGlitch() {
     await wait(500);
 
     // T=0.5: Line 1
-    await typeLine("SYSTEM UNSTABLE...");
-
-    // Play "Hit Two" (First impact) - Play AFTER text starts or during? 
-    // User wants "Hit Two is the first sample to be played after the first line"
+    // Play "Hit Two" (First impact) - START WITH TEXT
+    audio.hit2.currentTime = 0;
     audio.hit2.play().catch(e => console.log("Hit2 Fail", e));
+
+    await typeLine("SYSTEM UNSTABLE...");
 
     await wait(1500);
 
@@ -187,6 +187,10 @@ async function startCinematicGlitch() {
     await wait(1000);
 
     // T=8.5: The Drop (Silence)
+    // Play "Hit Two" Again (Meltdown End)
+    audio.hit2.currentTime = 0;
+    audio.hit2.play().catch(e => console.log("Hit2 End Fail", e));
+
     await typeLine("OVERLOAD IMMINENT", "accent-red");
 
     await wait(2500);
