@@ -50,7 +50,7 @@ function init() {
         showPhase(3); // Jump to Reveal
 
         spawnFloatingHearts();
-        startQuoteSequence();
+        startQuoteSequence(content.mainBody);
 
         playMusic();
     } else {
@@ -456,7 +456,7 @@ function sendMagicPing() {
 }
 
 // --- QUOTE SEQUENCE LOGIC ---
-async function startQuoteSequence() {
+async function startQuoteSequence(initialGreeting = null) {
     const container = document.getElementById('reveal-body');
     // Clear initial content
     container.style.opacity = 0;
@@ -473,7 +473,8 @@ async function startQuoteSequence() {
     }
 
     // 1. Show Greeting
-    const greeting = "Just kidding, take this moment to know I see you and you are loved.";
+    // Use provided greeting (return visit) OR default (after glitch)
+    const greeting = initialGreeting || "Just kidding, take this moment to know I see you and you are loved.";
     container.innerText = greeting;
 
     // Fade In Greeting
