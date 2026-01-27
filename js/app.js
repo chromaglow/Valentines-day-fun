@@ -130,8 +130,8 @@ async function startCinematicGlitch() {
 
         for (let i = 0; i < txt.length; i++) {
             div.innerText += txt.charAt(i);
-            // Slow typing for glitch (requested 300ms)
-            await wait(300 + Math.random() * 30);
+            // Targeted 2.0s duration per line (approx 100ms/char)
+            await wait(100 + Math.random() * 30);
         }
 
         // Remove cursor after typing is done (so it doesn't blink on all lines)
