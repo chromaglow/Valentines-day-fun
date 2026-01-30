@@ -22,7 +22,8 @@ const audio = {
 let state = {
     hasUnlocked: false,
     clickCount: 0,
-    visitCount: 0
+    visitCount: 0,
+    lastCode: null
 };
 
 // --- INITIALIZATION ---
@@ -281,6 +282,8 @@ function showPhase(id) {
 function loadState() {
     // Debug/Reset Check
     const urlParams = new URLSearchParams(window.location.search);
+    const currentCode = urlParams.get('code');
+
     // Only clear state if RESET is explicitly requested
     if (urlParams.has('reset')) {
         console.log("Debug Mode: Clearing State");
@@ -290,10 +293,28 @@ function loadState() {
     const saved = localStorage.getItem('nfc_valentine_state');
     if (saved) {
         state = JSON.parse(saved);
+
+        // Quality of Life: If testing a NEW code, reset state (so it feels fresh)
+        // Unless it's the "default" code (no code param)
+        if (currentCode && state.lastCode && currentCode !== state.lastCode) {
+            console.log("New Code Detected: Resetting State for fresh experience");
+            state = {
+                hasUnlocked: false,
+                clickCount: 0,
+                visitCount: 0,
+                lastCode: currentCode
+            };
+        }
+
         state.visitCount++;
     } else {
         state.visitCount = 1;
+        state.lastCode = currentCode || null;
     }
+
+    // Always update lastCode
+    if (currentCode) state.lastCode = currentCode;
+
     localStorage.setItem('nfc_valentine_state', JSON.stringify(state));
 }
 
