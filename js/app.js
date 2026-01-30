@@ -307,6 +307,10 @@ function loadState() {
         }
 
         state.visitCount++;
+
+        // FORCE RESET clickCount every session (per user request)
+        // This ensures "Locked" messages always start from #1
+        state.clickCount = 0;
     } else {
         state.visitCount = 1;
         state.lastCode = currentCode || null;
