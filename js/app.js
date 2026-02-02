@@ -96,15 +96,15 @@ function updateLockedMessage() {
     let msg = "";
     // Attempt 1
     if (state.clickCount === 1) {
-        msg = "Patience is a virtue.";
+        msg = "Patience is a virtue. Come back on Valentines.";
     }
     // Attempt 2
     else if (state.clickCount === 2) {
-        msg = "Relax, it's not time yet.";
+        msg = "Relax, it's not time yet. Come back on Valentines.";
     }
     // Attempt 3+
     else {
-        msg = "I will turn this valentine around and send it back home.";
+        msg = "I will turn this valentine around and send it back home. Come back on Valentines.";
     }
 
     document.getElementById('gate-message').innerText = prefix;

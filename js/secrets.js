@@ -1,3 +1,3 @@
 // PRIVATE CONFIGURATION
 // DO NOT COMMIT THIS FILE TO GIT
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZpnXRGCLhC3eEOKEKCfc-yj24F0397Iu4LtNVCDNIRi1FQVAMLdvA28tJYHcutKxNTg/exec';
+var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZpnXRGCLhC3eEOKEKCfc-yj24F0397Iu4LtNVCDNIRi1FQVAMLdvA28tJYHcutKxNTg/exec';
