@@ -1,9 +1,16 @@
-// App Configuration
 const CONFIG = {
     unlockDate: new Date('2026-02-14T00:00:00'), // TARGET DATE
     debugMode: new URLSearchParams(window.location.search).has('debug'), // Auto-enable if ?debug in URL
     visitThreshold: 3 // Hours between visits to count as "Return"
 };
+
+// --- BACKEND CONNECTION ---
+// URL is loaded from secrets.js
+// If missing, app will work in "Offline Mode" (Default messages only)
+if (typeof GOOGLE_SCRIPT_URL === 'undefined') {
+    console.warn("secrets.js not found. Remote features disabled.");
+    var GOOGLE_SCRIPT_URL = null;
+}
 
 // DOM Elements
 const phases = {
@@ -27,7 +34,7 @@ let state = {
 };
 
 // --- INITIALIZATION ---
-function init() {
+async function init() {
     loadState();
     setupTheme();
 
@@ -47,7 +54,18 @@ function init() {
 
     // If unlocked and "Safe Mode" applies (seen before), skip to end?
     if (state.hasUnlocked) {
-        const content = setupRevealContent('return');
+        // Show loading state briefly or just wait
+        showPhase(0);
+        document.getElementById('tap-text').innerText = "Loading...";
+
+        // Fetch fresh data
+        const code = params.get('code');
+        let remoteMsg = null;
+        if (GOOGLE_SCRIPT_URL && code) {
+            remoteMsg = await fetchRemoteData(code);
+        }
+
+        const content = setupRevealContent('return', remoteMsg);
         showPhase(3); // Jump to Reveal
 
         spawnFloatingHearts();
@@ -167,6 +185,15 @@ async function startCinematicGlitch() {
     audio.hit2.currentTime = 0;
     audio.hit2.play().catch(e => console.log("Hit2 Fail", e));
 
+    // --- START FETCH IN BACKGROUND ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    let fetchPromise = Promise.resolve(null);
+    if (GOOGLE_SCRIPT_URL && code) {
+        fetchPromise = fetchRemoteData(code);
+    }
+    // --------------------------------
+
     await typeLine("SYSTEM UNSTABLE...");
 
     await wait(1500);
@@ -235,10 +262,26 @@ async function startCinematicGlitch() {
     // Mark as unlocked
     state.hasUnlocked = true;
     saveState();
-    sendMagicPing();
+
+    // Check if Backend handled notification
+    if (!GOOGLE_SCRIPT_URL) {
+        sendMagicPing();
+    }
+
+    // Resolve Data
+    const remoteData = await fetchPromise;
+    let initialGreeting = null;
+
+    if (remoteData && remoteData.message) {
+        initialGreeting = remoteData.message;
+    } else {
+        // Fallback to local
+        const content = setupRevealContent('glitch');
+        initialGreeting = content.mainBody;
+    }
 
     // Start Quote Sequence
-    startQuoteSequence();
+    startQuoteSequence(initialGreeting);
 }
 
 function playMusic(fadeInDuration = 2000) {
@@ -415,14 +458,14 @@ function setupTheme() {
     return timeOfDay;
 }
 
-function setupRevealContent(mode) {
+function setupRevealContent(mode, remoteMsg = null) {
     // 1. Get Code from URL
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code') || 'default';
 
-    // 2. Determine Message Parts
-    let mainBody = "";
-    let footer = "";
+    if (remoteMsg && remoteMsg.message) {
+        // DO NOTHING HERE - Handled below combined with default
+    }
 
     if (mode === 'return') {
         // Safe Mode / Return Visit
@@ -430,7 +473,14 @@ function setupRevealContent(mode) {
         footer = "";
     } else {
         // First Run
-        mainBody = MESSAGES.reveal.codes[code] || MESSAGES.reveal.codes['default'];
+        let defaultMsg = MESSAGES.reveal.codes[code] || MESSAGES.reveal.codes['default'];
+
+        if (remoteMsg && remoteMsg.message) {
+            // COMBINE: Remote Message + Default Message
+            mainBody = `${remoteMsg.message} ${defaultMsg}`;
+        } else {
+            mainBody = defaultMsg;
+        }
 
         // Time specific footer (Morning/Evening)
         const timeOfDay = setupTheme();
@@ -438,6 +488,22 @@ function setupRevealContent(mode) {
     }
 
     return { mainBody, footer };
+}
+
+async function fetchRemoteData(code) {
+    if (!GOOGLE_SCRIPT_URL) return null;
+
+    try {
+        console.log("Fetching remote data for:", code);
+        const res = await fetch(`${GOOGLE_SCRIPT_URL}?code=${code}&ua=${navigator.userAgent}`);
+        const data = await res.json();
+        if (data.found) {
+            return data;
+        }
+    } catch (e) {
+        console.error("Remote Fetch Failed", e);
+    }
+    return null;
 }
 
 async function typewriterEffect(text, elementId, baseSpeed = 50) {
