@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Built a Valentine's Card That Roasts You For Opening It Early</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 40px 0 20px 0;
+            font-weight: 700;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            font-size: 1.3em;
+            color: #34495e;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        
+        strong {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e74c3c;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        pre code {
+            background: none;
+            color: #abb2bf;
+            padding: 0;
+        }
+        
+        ul, ol {
+            margin: 20px 0 20px 30px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        
+        blockquote {
+            border-left: 4px solid #e74c3c;
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #555;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 30px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: -20px;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+            border-bottom: 2px solid #e74c3c;
+            transition: all 0.3s;
+        }
+        
+        a:hover {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #e0e0e0;
+            margin: 40px 0;
+        }
+        
+        .tech-stack {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>I Built a Valentine's Card That Roasts You For Opening It Early</h1>
+        
+        <p>Most Valentine's cards are dead on arrival. You write something sweet, seal the envelope, hand it over—done. The message is frozen in time, a snapshot of a single moment that can never change.</p>
+        
+        <p>I wanted to build something that refused to die.</p>
+        
+        <p>What if a physical card could update itself? What if I could rewrite the message days after handing it over? What if it had enough personality to tell you to fuck off when you tried to peek early?</p>
+        
+        <p>This is the technical breakdown of the NFC Valentine: a 3D-printed card with embedded NFC tags, context-aware personalization, a choreographed glitch sequence synced to audio cues, and a real-time content management system I control from my phone—complete with push notifications when someone opens it.</p>
+        
+        <img src="IMG_0725.jpeg" alt="The Timeline of Broken Expectations">
+        <p class="image-caption">Each touchpoint systematically subverts what the recipient anticipates</p>
+        
+        <h2>The Stack</h2>
+        
+        <p><strong>Physical:</strong></p>
+        <ul>
+            <li>CAD-designed translucent housing with floating opaque shapes</li>
+            <li>Postcard dimensions (5" x 7") for mail compatibility</li>
+            <li>Embedded NFC-215 tags (invisible integration)</li>
+            <li>Braille embossing: "Love is blind"</li>
+        </ul>
+        
+        <p><strong>Frontend:</strong></p>
+        <ul>
+            <li>Vanilla JavaScript (no framework bloat)</li>
+            <li>CSS animations choreographed to millisecond precision</li>
+            <li>Web Audio API for glitch sound effects</li>
+            <li><code>sessionStorage</code> for visit tracking</li>
+            <li><code>Date()</code> object for temporal gating</li>
+        </ul>
+        
+        <p><strong>Backend:</strong></p>
+        <ul>
+            <li>Google Sheets as headless CMS</li>
+            <li>Google Apps Script as serverless API</li>
+            <li>ntfy.sh for push notifications</li>
+            <li>Zero database, zero hosting costs</li>
+        </ul>
+        
+        <p><strong>The whole thing runs on static hosting and updates in real-time.</strong> No servers. No monthly fees. Just a spreadsheet, some clever JavaScript, and audacity.</p>
+        
+        <img src="IMG_0728.jpeg" alt="Digital NFC Valentine Ecosystem">
+        <p class="image-caption">The complete data flow from NFC tap to push notification</p>
+        
+        <h2>Phase 1: The Physical Object Subverts Expectations</h2>
+        
+        <p>Before anyone taps their phone, the card already breaks conventions.</p>
+        
+        <p>I designed it in Fusion 360 as a layered piece—translucent PLA with opaque shapes that appear to float in a sea of red. The dimensional quality catches light differently depending on viewing angle. It doesn't look like cardstock. It looks like something between a card and a sculpture.</p>
+        
+        <p>The thickness serves a purpose: housing the NFC tag invisibly while maintaining postcard dimensions for standard mail.</p>
+        
+        <p>On the back, there's Braille: <strong>"Love is blind."</strong></p>
+        
+        <p>Most people won't notice. Some will run their fingers over the raised dots and wonder. A few will read it and smile at the layered meaning. Accessibility isn't an afterthought—it's part of the narrative.</p>
+        
+        <h2>Phase 2: The Card Has Opinions (And They're Sassy)</h2>
+        
+        <p>Try to scan it on February 10th? You get this:</p>
+        
+        <pre><code>Patience is a virtue. Try again on Valentine's Day.</code></pre>
+        
+        <p>Come back an hour later because you're curious?</p>
+        
+        <pre><code>Relax. It's not time yet.</code></pre>
+        
+        <p>Try again?</p>
+        
+        <pre><code>So help me, if you don't stop this, I'll turn this Valentine 
+around and send it home.</code></pre>
+        
+        <p>The implementation is dead simple but effective:</p>
+        
+        <pre><code>const today = new Date();
+const vday = new Date(today.getFullYear(), 1, 14); // Feb 14
+
+if (today < vday) {
+  const attempts = sessionStorage.getItem('attempts') || 0;
+  sessionStorage.setItem('attempts', parseInt(attempts) + 1);
+  
+  const responses = [
+    "Patience is a virtue. Try again on Valentine's Day.",
+    "Relax. It's not time yet.",
+    "So help me, if you don't stop this, I'll turn this Valentine around and send it home.",
+    "I'm serious. February 14th. Not earlier.",
+    "You're really testing my patience here."
+  ];
+  
+  return responses[Math.min(attempts, responses.length - 1)];
+}</code></pre>
+        
+        <p>The card doesn't just wait passively. It pushes back. It teases. It makes you <strong>earn</strong> the reveal.</p>
+        
+        <h2>Phase 3: Context-Aware Personalization</h2>
+        
+        <p>Even after Valentine's Day unlocks, the card doesn't show the same message every time.</p>
+        
+        <p><strong>Time-aware greetings:</strong></p>
+        
+        <pre><code>const hour = new Date().getHours();
+let greeting;
+
+if (hour < 12) {
+  greeting = `Good morning, ${name}. Here's something to start your day...`;
+} else if (hour < 18) {
+  greeting = `Hope your afternoon is going well, ${name}...`;
+} else {
+  greeting = `As the day winds down, ${name}...`;
+}</code></pre>
+        
+        <p><strong>Visit tracking:</strong></p>
+        
+        <pre><code>const visitCount = sessionStorage.getItem('visitCount') || 0;
+sessionStorage.setItem('visitCount', parseInt(visitCount) + 1);
+
+if (visitCount > 0) {
+  return "Back again? I have more to say...";
+}</code></pre>
+        
+        <p>The card knows <strong>who</strong> you are (via the NFC code), <strong>when</strong> you're opening it, and <strong>how many times</strong> you've visited. Every tap is a new interaction.</p>
+        
+        <h2>Phase 4: The Glitch Performance (Peak UX Chaos)</h2>
+        
+        <p>The moment you finally unlock it on Valentine's Day, the screen doesn't show love.</p>
+        
+        <p><strong>It shows chaos.</strong></p>
+        
+        <pre><code>SYSTEM UNSTABLE...
+ATTEMPTING RECOVERY...
+⚠️ CRITICAL FAILURE ⚠️</code></pre>
+        
+        <p>Red terminal text. Screen shakes. Colors strobe. Audio glitches fire in sync: metallic clanks, distortion, the sound of something breaking.</p>
+        
+        <p>For <strong>4.5 seconds</strong>, it feels like you just bricked your phone.</p>
+        
+        <p>Then the bass drops. The chaos clears. The glitch resolves into something calm and beautiful—the actual message, timed perfectly to the music.</p>
+        
+        <h3>The Technical Challenge: Frame-Perfect Timing</h3>
+        
+        <p>Choreographing DOM manipulation, CSS animations, and audio cues down to the millisecond meant treating <code>audio.currentTime</code> as a metronome:</p>
+        
+        <pre><code>const audio = new Audio('glitch-sequence.mp3');
+audio.play();
+
+const timeline = [
+  { time: 0.0, action: () => showText("SYSTEM UNSTABLE...") },
+  { time: 1.2, action: () => shakeScreen() },
+  { time: 2.1, action: () => showText("ATTEMPTING RECOVERY...") },
+  { time: 2.8, action: () => strobeColors() },
+  { time: 3.5, action: () => showText("⚠️ CRITICAL FAILURE ⚠️") },
+  { time: 3.5, action: () => playGlitchSound() },
+  { time: 4.5, action: () => clearChaos() },
+  { time: 5.0, action: () => revealMessage() }
+];
+
+function tick() {
+  const current = audio.currentTime;
+  timeline.forEach(event => {
+    if (current >= event.time && current < event.time + 0.05) {
+      event.action();
+    }
+  });
+  requestAnimationFrame(tick);
+}
+
+tick();</code></pre>
+        
+        <p>Every glitch, every fade, every text reveal had to sync with the beat. It had to feel <strong>cinematic</strong>, not scripted.</p>
+        
+        <h2>Phase 5: Google Sheets as a Headless CMS</h2>
+        
+        <p>Here's where it gets interesting.</p>
+        
+        <p>Most developers would hardcode the messages in the source code. But that makes the card static—just in a different format.</p>
+        
+        <p>I wanted the card to be a <strong>living document.</strong> I wanted to update the message <strong>after</strong> handing over the card.</p>
+        
+        <p><strong>The solution: Google Sheets as a serverless backend.</strong></p>
+        
+        <h3>The Spreadsheet Structure:</h3>
+        
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Message</th>
+            </tr>
+            <tr>
+                <td>A01</td>
+                <td>Alice</td>
+                <td>"I saw you smile at the coffee shop today"</td>
+            </tr>
+            <tr>
+                <td>A02</td>
+                <td>Bob</td>
+                <td>"Your laugh is my favorite sound"</td>
+            </tr>
+            <tr>
+                <td>A03</td>
+                <td>Carol</td>
+                <td>"Thanks for always being there"</td>
+            </tr>
+        </table>
+        
+        <h3>The Google Apps Script API:</h3>
+        
+        <pre><code>function doGet(e) {
+  const code = e.parameter.code;
+  const sheet = SpreadsheetApp.openById('YOUR_SHEET_ID').getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === code) {
+      // Log the access
+      logAccess(code, data[i][1]);
+      
+      // Return the message
+      return ContentService.createTextOutput(JSON.stringify({
+        name: data[i][1],
+        message: data[i][2]
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({
+    error: "Invalid code"
+  })).setMimeType(ContentService.MimeType.JSON);
+}</code></pre>
+        
+        <h3>The Frontend Fetch:</h3>
+        
+        <pre><code>const code = new URLSearchParams(window.location.search).get('code');
+const response = await fetch(`YOUR_APPS_SCRIPT_URL?code=${code}`);
+const data = await response.json();</code></pre>
+        
+        <p><strong>The result:</strong> I can hand you a card on February 10th with a placeholder message, then open the Google Sheets app on my phone at 11:59 PM on Valentine's Day and type:</p>
+        
+        <blockquote>"I saw you smile at the coffee shop today."</blockquote>
+        
+        <p>The next time you scan, that <strong>new message appears.</strong></p>
+        
+        <p>The card isn't done when I give it to you. It's a <strong>channel I can keep writing through.</strong></p>
+        
+        <h2>Phase 6: The Feedback Loop (Push Notifications)</h2>
+        
+        <p>The final layer most people never see: <strong>I know when you open it.</strong></p>
+        
+        <img src="IMG_0726.jpeg" alt="The Feedback Loop Architecture">
+        <p class="image-caption">A living system that maintains an open channel between creator and recipient</p>
+        
+        <p>Integrated into the Google Apps Script is a call to <a href="https://ntfy.sh">ntfy.sh</a>, a dead-simple notification service:</p>
+        
+        <pre><code>function logAccess(code, name) {
+  const message = `${name} just opened their Valentine!`;
+  
+  UrlFetchApp.fetch('https://ntfy.sh/YOUR_TOPIC', {
+    method: 'post',
+    headers: { 'Title': 'Valentine Opened!' },
+    payload: message
+  });
+}</code></pre>
+        
+        <p><strong>Buzz.</strong> My phone lights up:</p>
+        
+        <blockquote><strong>Alice just opened their Valentine!</strong></blockquote>
+        
+        <p>Not invasive. Not tracking. Just a momentary awareness that the connection happened.</p>
+        
+        <p>It closes the loop. The card isn't just me broadcasting—it creates a <strong>feedback channel.</strong> I send a gift, and I get a quiet signal back when it's received.</p>
+        
+        <h2>The Architecture: How It All Connects</h2>
+        
+        <p>The beauty of this system is how simple components create complex behavior:</p>
+        
+        <p><strong>The 7-Step Data Flow:</strong></p>
+        <ol>
+            <li>User taps NFC card → URL loads with unique code parameter</li>
+            <li>Frontend validates date/time → serves appropriate response</li>
+            <li>Frontend requests personalized message via fetch()</li>
+            <li>Google Apps Script receives code → queries spreadsheet</li>
+            <li>Backend triggers ntfy.sh push notification</li>
+            <li>Creator receives real-time alert on mobile</li>
+            <li>Creator updates message in Google Sheets → loop continues</li>
+        </ol>
+        
+        <p>Every layer serves multiple purposes:</p>
+        <ul>
+            <li><strong>Google Sheets</strong> isn't just storage—it's a mobile-accessible CMS</li>
+            <li><strong>Apps Script</strong> isn't just an API—it's the notification trigger</li>
+            <li><strong>The frontend</strong> isn't just display—it's the personality engine</li>
+            <li><strong>NFC</strong> isn't just a link—it's the physical-digital bridge</li>
+        </ul>
+        
+        <p>The system is <strong>serverless, stateless, and costs nothing to operate</strong> after initial materials (~$15 for NFC tags, ~$5 for PLA filament).</p>
+        
+        <h2>The Result: A New Design Space</h2>
+        
+        <p>To the recipient, it looks like magic:</p>
+        
+        <ol>
+            <li>They receive something beautiful and strange in the mail</li>
+            <li>They discover the Braille on the back</li>
+            <li>They tap their phone on February 10th and get scolded</li>
+            <li>They tap again and get a dad-joke-level threat</li>
+            <li>They come back on February 14th in the morning</li>
+            <li>The screen loses its mind for 4.5 seconds</li>
+            <li>A personalized greeting appears that knows it's morning</li>
+            <li>They visit again in the evening—different message</li>
+            <li>They come back days later—<strong>new message I wrote from my phone</strong></li>
+        </ol>
+        
+        <p>To me, it's proof that the boundary between physical and digital isn't a wall—it's a <strong>design space.</strong></p>
+        
+        <h2>Why This Matters</h2>
+        
+        <p>We're entering an era where physical objects don't have to be static. NFC is standard on every phone now. APIs are everywhere. The tools to make real-world things "smart" are no longer expensive or complicated.</p>
+        
+        <p>They're just waiting for someone to think differently about what "a card" can do.</p>
+        
+        <p>I didn't just digitize a Valentine. I built a new paradigm for physical gifts—one that:</p>
+        <ul>
+            <li>Has personality and timing</li>
+            <li>Stays open as a communication channel</li>
+            <li>Adapts to context</li>
+            <li>Can be updated remotely</li>
+            <li>Provides bidirectional feedback</li>
+        </ul>
+        
+        <p><strong>And the entire stack costs $0/month to run.</strong></p>
+        
+        <img src="IMG_0727.jpeg" alt="Valentine Project Skill Application">
+        <p class="image-caption">38 distinct skill applications across 6 project layers demonstrating multidisciplinary expertise</p>
+        
+        <h2>The Code</h2>
+        
+        <p>Want to build something that refuses to stay static?</p>
+        
+        <p>The full source code, CAD files, and Google Apps Script are on my GitHub: <a href="https://github.com/chromaglow/Valentines-day-fun">github.com/chromaglow/Valentines-day-fun</a></p>
+        
+        <p>Let's talk about what else we can make come alive.</p>
+        
+        <hr>
+        
+        <div class="tech-stack">
+            <p><strong>Tech Stack Summary:</strong></p>
+            <ul>
+                <li><strong>Physical:</strong> CAD, 3D printing, NFC-215 tags, Braille embossing</li>
+                <li><strong>Frontend:</strong> Vanilla JS, Web Audio API, CSS animations, DOM choreography</li>
+                <li><strong>Backend:</strong> Google Sheets, Google Apps Script, ntfy.sh</li>
+                <li><strong>Hosting:</strong> Static (GitHub Pages, Netlify, etc.)</li>
+                <li><strong>Cost:</strong> $0/month (after initial materials)</li>
+            </ul>
+            
+            <p><strong>Future Improvements:</strong></p>
+            <ul>
+                <li>E-ink display integration for persistent visual updates</li>
+                <li>Haptic feedback via NFC-enabled devices</li>
+                <li>Geofencing for location-aware messages</li>
+                <li>Multi-recipient group cards with shared state</li>
+                <li>End-to-end encryption for private messages</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
