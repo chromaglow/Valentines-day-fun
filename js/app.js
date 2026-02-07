@@ -22,8 +22,17 @@ const phases = {
 const audio = {
     hit1: document.getElementById('audio-hit1'),
     hit2: document.getElementById('audio-hit2'),
-    song: document.getElementById('audio-song')
+    song: document.getElementById('audio-song'),
+    song2: document.getElementById('audio-song2')
 };
+
+// Song catalog — add new songs here
+const SONGS = [
+    { element: document.getElementById('audio-song'),  credit: 'Lightning Hopkins - Last Night Blues', startAt: 0 },
+    { element: document.getElementById('audio-song2'), credit: "Sally Baby's Silver Dollars - I Got No More Tears Left to Cry", startAt: 0 }
+];
+let currentSongIndex = 0;
+let fadeIntervalId = null;
 
 // State
 let state = {
@@ -79,6 +88,16 @@ async function init() {
 
     // Attach Start Listener
     document.getElementById('start-btn').addEventListener('click', handleStart);
+
+    // Song pick listeners
+    document.querySelectorAll('.song-pick').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetIndex = parseInt(btn.dataset.song);
+            if (targetIndex !== currentSongIndex) {
+                switchSong(targetIndex);
+            }
+        });
+    });
 }
 
 // --- CORE FLOW ---
@@ -117,31 +136,28 @@ async function handleStart() {
     audio.hit1.muted = true;
     audio.hit2.muted = true;
     audio.song.muted = true;
+    audio.song2.muted = true;
 
     try {
-        await Promise.all([
+        // Use allSettled so one failed audio doesn't block the others
+        await Promise.allSettled([
             audio.hit1.play(),
             audio.hit2.play(),
-            audio.song.play()
+            audio.song.play(),
+            audio.song2.play()
         ]);
 
-        audio.hit1.pause();
-        audio.hit2.pause();
-        audio.song.pause();
-
-        audio.hit1.currentTime = 0;
-        audio.hit2.currentTime = 0;
-        audio.song.currentTime = 0;
-
-        // Unmute for actual use
-        audio.hit1.muted = false;
-        audio.hit2.muted = false;
-        audio.song.muted = false;
+        // Pause and reset ALL elements (safe even if some failed to play)
+        [audio.hit1, audio.hit2, audio.song, audio.song2].forEach(el => {
+            try { el.pause(); } catch(e) {}
+            el.currentTime = 0;
+            el.muted = false;
+        });
 
         // Reset Volume just in case
         audio.hit1.volume = 1.0;
         audio.hit2.volume = 1.0;
-        // Song volume is managed by fade-in logic later
+        // Song volumes are managed by fade-in logic later
 
         console.log("Audio Unlocked");
     } catch (e) {
@@ -284,24 +300,81 @@ async function startCinematicGlitch() {
     startQuoteSequence(initialGreeting);
 }
 
-function playMusic(fadeInDuration = 2000) {
-    audio.song.volume = 0;
-    audio.song.play().catch(e => console.log("Music play blocked", e));
+function playMusic(fadeInDuration = 2000, songElement = null) {
+    const target = songElement || SONGS[currentSongIndex].element;
+
+    // Clear any in-progress fade (handles mid-fade switch)
+    if (fadeIntervalId !== null) {
+        clearInterval(fadeIntervalId);
+        fadeIntervalId = null;
+    }
+
+    // Set start position from song catalog
+    const songData = SONGS.find(s => s.element === target);
+    if (songData && songData.startAt && target.currentTime < songData.startAt) {
+        target.currentTime = songData.startAt;
+    }
+
+    target.volume = 0;
+    target.play().catch(e => console.log("Music play blocked", e));
 
     // Fade in
     let vol = 0;
-    const stepTime = 100; // Update every 100ms
+    const stepTime = 100;
     const steps = fadeInDuration / stepTime;
-    const volStep = 1.0 / steps; // Target 1.0 volume
+    const volStep = 1.0 / steps;
 
-    const fade = setInterval(() => {
+    fadeIntervalId = setInterval(() => {
         if (vol < 1.0) {
             vol += volStep;
-            audio.song.volume = Math.min(vol, 1.0);
+            target.volume = Math.min(vol, 1.0);
         } else {
-            clearInterval(fade);
+            clearInterval(fadeIntervalId);
+            fadeIntervalId = null;
         }
     }, stepTime);
+}
+
+function switchSong(targetIndex) {
+    const oldSongElement = SONGS[currentSongIndex].element;
+
+    currentSongIndex = targetIndex;
+    const newSongElement = SONGS[currentSongIndex].element;
+
+    // 1. Kill any in-progress fade on the old song
+    if (fadeIntervalId !== null) {
+        clearInterval(fadeIntervalId);
+        fadeIntervalId = null;
+    }
+
+    // 2. Fade out old song (500ms)
+    const fadeOutStepTime = 50;
+    const fadeOutSteps = 500 / fadeOutStepTime;
+    const currentVol = oldSongElement.volume;
+    const fadeOutVolStep = currentVol / fadeOutSteps;
+    let outVol = currentVol;
+
+    const fadeOutId = setInterval(() => {
+        if (outVol > 0) {
+            outVol -= fadeOutVolStep;
+            oldSongElement.volume = Math.max(outVol, 0);
+        } else {
+            clearInterval(fadeOutId);
+            oldSongElement.pause();
+            oldSongElement.currentTime = 0;
+        }
+    }, fadeOutStepTime);
+
+    // 3. Start new song with crossfade overlap
+    setTimeout(() => {
+        newSongElement.currentTime = SONGS[currentSongIndex].startAt || 0;
+        playMusic(1000, newSongElement);
+    }, 250);
+
+    // 4. Update active class on song picks
+    document.querySelectorAll('.song-pick').forEach(btn => {
+        btn.classList.toggle('active-song', parseInt(btn.dataset.song) === currentSongIndex);
+    });
 }
 
 // --- UTILS ---

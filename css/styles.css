@@ -258,15 +258,51 @@ body {
 }
 
 
-.music-credit {
+/* --- MUSIC CONTROLS (Bottom of Phase 3) --- */
+.music-controls {
     position: absolute;
     bottom: 1rem;
+    left: 0;
     width: 100%;
-    text-align: center;
-    font-size: 0.6rem;
-    opacity: 0.3;
-    font-style: italic;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    z-index: 10;
+    pointer-events: all;
+}
+
+.song-pick {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--reveal-text);
     font-family: var(--font-system);
+    font-size: 0.6rem;
+    font-style: italic;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+    padding: 0.2rem 0;
+    pointer-events: all;
+    white-space: nowrap;
+    border-bottom: 1px solid transparent;
+}
+
+.song-pick:hover {
+    opacity: 0.7;
+}
+
+.song-pick.active-song {
+    opacity: 0.5;
+    cursor: default;
+    border-bottom: 1px solid var(--reveal-accent);
+}
+
+.song-divider {
+    color: var(--reveal-text);
+    font-size: 0.6rem;
+    opacity: 0.2;
     pointer-events: none;
 }
 

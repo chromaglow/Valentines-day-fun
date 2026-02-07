@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Wait for it...</title>
-    <link rel="stylesheet" href="css/styles.css?v=41">
+    <link rel="stylesheet" href="css/styles.css?v=42">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Using 'Inter' for system feel and 'Playfair Display' for the warm reveal -->
@@ -58,7 +58,11 @@
                     <p id="reveal-footer" class="fade-up-delay"></p>
                 </div>
 
-                <div class="music-credit">Lightning Hopkins - Last Night Blues</div>
+                <div class="music-controls">
+                    <button class="song-pick active-song" data-song="0">Lightning Hopkins - Last Night Blues</button>
+                    <span class="song-divider">|</span>
+                    <button class="song-pick" data-song="1">Sally Baby's Silver Dollars</button>
+                </div>
             </div>
         </div>
 
@@ -68,9 +72,10 @@
     <audio id="audio-hit1" src="assets/audio/hit1_v2.mp3" preload="auto"></audio>
     <audio id="audio-hit2" src="assets/audio/hit2_v2.mp3" preload="auto"></audio>
     <audio id="audio-song" src="assets/audio/song_3.mp3" preload="auto" loop></audio>
+    <audio id="audio-song2" src="assets/audio/song_4.mp3" preload="auto" loop></audio>
 
     <script src="js/secrets.js"></script>
-    <script src="js/app.js?v=41"></script>
+    <script src="js/app.js?v=42"></script>
 </body>
 
 </html>
