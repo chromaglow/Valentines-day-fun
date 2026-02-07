@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(node --version:*)",
+      "Bash(python -m http.server:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
