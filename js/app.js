@@ -554,10 +554,22 @@ async function startQuoteSequence(initialGreeting = null) {
     container.style.opacity = 0;
     container.innerHTML = "";
 
-    // Restore Footer with SMS Link
+    // Restore Footer with Action Menu
     const footer = document.getElementById('reveal-footer');
     if (footer) {
-        footer.innerHTML = '<a href="sms:&body=I found the hidden valentine!" class="sms-link">Tell Ezra you found his love</a>';
+        footer.innerHTML = `
+            <div class="footer-actions">
+                <a href="sms:&body=I found the hidden valentine!" class="sms-link">Tell Ezra you found his love</a>
+
+                <div class="meta-links">
+                    <a href="https://chromaglow.github.io/superlite_v2/" class="footer-link" target="_blank">Hire Me</a>
+                    
+                    <a href="https://chromaglow.github.io/superlite_v2/blog/2026-02-06-outsmarting-the-impatient-a-personalized/" class="footer-link" target="_blank">How I made this</a>
+                    
+                    <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=eshively" class="footer-link" target="_blank">Follow on LinkedIn</a>
+                </div>
+            </div>
+        `;
         footer.style.opacity = 1;
         // Ensure it's clickable (z-index fix)
         footer.style.position = 'relative';

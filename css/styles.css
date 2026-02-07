@@ -192,9 +192,71 @@ body {
     transition: opacity 0.3s ease;
 }
 
+
+
 .sms-link:hover {
     opacity: 1;
 }
+
+/* --- NEW FOOTER ACTIONS --- */
+.footer-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    pointer-events: all;
+    width: 100%;
+}
+
+.meta-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    /* Align baselines */
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    /* Safe wrapping for mobile */
+}
+
+/* Text Links in Footer */
+.footer-link {
+    text-decoration: none;
+    color: var(--reveal-accent);
+    font-family: var(--font-system);
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    border-bottom: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.footer-link:hover {
+    opacity: 1;
+    border-bottom: 1px solid var(--reveal-accent);
+}
+
+.sms-link {
+    /* Main CTA - make it stand out a bit more than meta links */
+    display: inline-block;
+    text-decoration: none;
+    border-bottom: 1px solid var(--reveal-accent);
+    color: var(--reveal-accent);
+    font-family: var(--font-system);
+    font-size: 1rem;
+    padding-bottom: 4px;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.sms-link:hover {
+    opacity: 1;
+    transform: scale(1.02);
+}
+
 
 .music-credit {
     position: absolute;
