@@ -28,7 +28,7 @@ const audio = {
 
 // Song catalog — add new songs here
 const SONGS = [
-    { element: document.getElementById('audio-song'),  credit: 'Lightning Hopkins - Last Night Blues', startAt: 0 },
+    { element: document.getElementById('audio-song'), credit: 'Lightning Hopkins - Last Night Blues', startAt: 0 },
     { element: document.getElementById('audio-song2'), credit: "Sally Baby's Silver Dollars - I Got No More Tears Left to Cry", startAt: 0 }
 ];
 let currentSongIndex = 0;
@@ -149,7 +149,7 @@ async function handleStart() {
 
         // Pause and reset ALL elements (safe even if some failed to play)
         [audio.hit1, audio.hit2, audio.song, audio.song2].forEach(el => {
-            try { el.pause(); } catch(e) {}
+            try { el.pause(); } catch (e) { }
             el.currentTime = 0;
             el.muted = false;
         });
@@ -280,9 +280,8 @@ async function startCinematicGlitch() {
     saveState();
 
     // Check if Backend handled notification
-    if (!GOOGLE_SCRIPT_URL) {
-        sendMagicPing();
-    }
+    // Always send local notification (ntfy.sh)
+    sendMagicPing();
 
     // Resolve Data
     const remoteData = await fetchPromise;
