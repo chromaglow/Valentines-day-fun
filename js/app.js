@@ -280,20 +280,25 @@ async function startCinematicGlitch() {
     saveState();
 
     // Check if Backend handled notification
-    // Always send local notification (ntfy.sh)
-    sendMagicPing();
-
     // Resolve Data
     const remoteData = await fetchPromise;
     let initialGreeting = null;
+    let userName = null;
 
     if (remoteData && remoteData.message) {
         initialGreeting = remoteData.message;
+        // Assuming Column A=Code, Column B=Name. API likely returns 'name' or similar if configured.
+        // If not, we might need to adjust based on actual API response structure.
+        // For now, check for common name fields.
+        userName = remoteData.name || remoteData.recipient || remoteData.user;
     } else {
         // Fallback to local
         const content = setupRevealContent('glitch');
         initialGreeting = content.mainBody;
     }
+
+    // Always send local notification (ntfy.sh) - NOW WITH NAME
+    sendMagicPing(userName);
 
     // Start Quote Sequence
     startQuoteSequence(initialGreeting);
@@ -595,7 +600,7 @@ async function typewriterEffect(text, elementId, baseSpeed = 50) {
     }
 }
 
-function sendMagicPing() {
+function sendMagicPing(name = null) {
     // Determine user code
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code') || 'Unknown';
@@ -608,11 +613,16 @@ function sendMagicPing() {
         return;
     }
 
+    let msg = `Code ${code} just opened the experience.`;
+    if (name) {
+        msg = `${name} just opened the experience.`;
+    }
+
     fetch(WEBHOOK_URL, {
         method: 'POST',
         body: JSON.stringify({
             topic: "valentine_tracker",
-            message: `Code ${code} just opened the experience.`,
+            message: msg,
             title: "Someone found love!",
             priority: 3
         })
