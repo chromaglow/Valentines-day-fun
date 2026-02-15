@@ -61,30 +61,11 @@ async function init() {
         return;
     }
 
-    // If unlocked and "Safe Mode" applies (seen before), skip to end?
-    if (state.hasUnlocked) {
-        // Show loading state briefly or just wait
-        showPhase(0);
-        document.getElementById('tap-text').innerText = "Loading...";
-
-        // Fetch fresh data
-        const code = params.get('code');
-        let remoteMsg = null;
-        if (GOOGLE_SCRIPT_URL && code) {
-            remoteMsg = await fetchRemoteData(code);
-        }
-
-        const content = setupRevealContent('return', remoteMsg);
-        showPhase(3); // Jump to Reveal
-
-        spawnFloatingHearts();
-        startQuoteSequence(content.mainBody);
-
-        playMusic();
-    } else {
-        // First run or Unlocked but fresh session
-        showPhase(0); // Tap to Connect
-    }
+    // If unlocked, we force the glitch anyway (per user request), 
+    // but keep the state so we know to show "Welcome Back" later.
+    
+    // First run or Unlocked but fresh session
+    showPhase(0); // Tap to Connect
 
     // Attach Start Listener
     document.getElementById('start-btn').addEventListener('click', handleStart);
@@ -275,6 +256,9 @@ async function startCinematicGlitch() {
     // Fade In Music (Over 2s)
     playMusic(2000);
 
+    // Capture previous state (for message selection)
+    const wasAlreadyUnlocked = state.hasUnlocked;
+
     // Mark as unlocked
     state.hasUnlocked = true;
     saveState();
@@ -293,7 +277,9 @@ async function startCinematicGlitch() {
         userName = remoteData.name || remoteData.recipient || remoteData.user;
     } else {
         // Fallback to local
-        const content = setupRevealContent('glitch');
+        // DYNAMIC CONTENT MODE: If they've been here before, show "Welcome Back" (return mode)
+        const mode = wasAlreadyUnlocked ? 'return' : 'glitch';
+        const content = setupRevealContent(mode);
         initialGreeting = content.mainBody;
     }
 
