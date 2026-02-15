@@ -63,7 +63,7 @@ async function init() {
 
     // If unlocked, we force the glitch anyway (per user request), 
     // but keep the state so we know to show "Welcome Back" later.
-    
+
     // First run or Unlocked but fresh session
     showPhase(0); // Tap to Connect
 
@@ -627,7 +627,7 @@ async function startQuoteSequence(initialGreeting = null) {
     if (footer) {
         footer.innerHTML = `
             <div class="footer-actions">
-                <a href="sms:&body=I found the hidden valentine!" class="sms-link">Tell Ezra you found his love</a>
+                <a href="sms:+12066599502&body=I found the hidden valentine!" class="sms-link">Tell Ezra you found his love</a>
 
                 <div class="meta-links">
                     <a href="https://chromaglow.github.io/superlite_v2/" class="footer-link" target="_blank">Hire Me</a>
