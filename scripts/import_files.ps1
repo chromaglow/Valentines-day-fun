@@ -1,5 +1,5 @@
 param(
-    [string]$SourcePath = "C:\\Users\\ezras\\OneDrive\\Desktop\\files",
+    [string]$SourcePath = "C:\\Users\\ezras\\Desktop\\files",
     [string]$TargetPath = "$PSScriptRoot\\..\\docs"
 )
 
